@@ -66,6 +66,95 @@ exports.auth = functions.https.onRequest((req, res) => {
     }
 });
 
+exports.getPackets = functions.https.onRequest((req, res) => {
 
+    if(req.method === 'GET') {
+
+        var token = req.query.token;
+
+        if(token) {
+            return admin.database().ref('users').orderByChild('token').equalTo(token).once('value', function(snapshot) {
+                if(snapshot.val()) {
+
+                    return database.orderByChild('key').on('value', (snapshot) => {
+
+                        if(snapshot.val()) {
+
+                            var packets = [];
+
+                            snapshot.forEach(function(childSnapshot) {
+                                var key = childSnapshot.key;
+                                var childSnapshotBody = childSnapshot.val();
+                                childSnapshotBody["id"] = key;
+
+                                packets.push(
+                                    childSnapshotBody
+                                )
+
+                            });
+                            res.status(200).send(packets);
+                        }
+                        else {
+                            res.status(404).send();
+                        }
+                    })
+                }
+            })
+        }
+    }
+    else {
+        res.status(400).send();
+    }
+});
+
+exports.addPacket = functions.https.onRequest((req, res) => {
+
+    if(req.method === 'POST') {
+
+        var token = req.query.token;
+        var author = req.body.author;
+        var size = req.body.size;
+
+        if(author && size && token) {
+
+            return admin.database().ref('users').orderByChild('token').equalTo(token).once('value', function(snapshot) {
+                if(snapshot.val()) {
+
+                    database.push({
+                        author: author,
+                        size: size
+                    }).then(function(snapshot) {
+
+                        var key = snapshot.key;
+
+                        admin.database().ref(`/packets/${key}`).on('value', function(snapshot) {
+
+                            if(snapshot.val()) {
+                                var snapshotBody = snapshot.val();
+                                snapshotBody["id"] = key;
+
+                                res.status(200).send(
+                                    snapshotBody
+                                );
+                            }
+                            else {
+                                res.status(404).send();
+                            }
+                        })
+
+                    });
+                } else {
+                    res.status(403).send('Invalid token');
+                }
+            });
+        }
+        else {
+            res.status(400).send('Missing parameter');
+        }
+    }
+    else {
+        res.status(400).send();
+    }
+});
 
 
