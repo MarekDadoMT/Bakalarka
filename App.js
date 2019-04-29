@@ -6,12 +6,16 @@ import 'firebase/functions';
 
 import Home from './screens/Home';
 import Login from './screens/Login';
+import Payments from './screens/Payments';
+import NewPayment from './screens/NewPayment';
 
 
 const AppNavigator = createStackNavigator(
     {
-      Home,
-      Login
+        Home,
+        Login,
+        Payments,
+        NewPayment
     },
 
     {
@@ -35,7 +39,6 @@ export default class App extends React.Component {
     };
     firebase.initializeApp(config);
 
-    //const myf = firebase.functions().httpsCallable('getArticles')
     var functions = firebase.functions();
 
 
