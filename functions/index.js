@@ -113,16 +113,20 @@ exports.addPacket = functions.https.onRequest((req, res) => {
 
         var token = req.query.token;
         var author = req.body.author;
-        var size = req.body.size;
+        var sourceAddress = req.body.sourceAddress;
+        var destinationAddress = req.body.destinationAddress;
+        var amount = req.body.amount;
 
-        if(author && size && token) {
+        if(author && sourceAddress && destinationAddress &&  amount && token) {
 
             return admin.database().ref('users').orderByChild('token').equalTo(token).once('value', function(snapshot) {
                 if(snapshot.val()) {
 
                     database.push({
                         author: author,
-                        size: size
+                        sourceAddress: sourceAddress,
+                        destinationAddress: destinationAddress,
+                        amount: amount
                     }).then(function(snapshot) {
 
                         var key = snapshot.key;
@@ -150,6 +154,44 @@ exports.addPacket = functions.https.onRequest((req, res) => {
         }
         else {
             res.status(400).send('Missing parameter');
+        }
+    }
+    else {
+        res.status(400).send();
+    }
+});
+
+exports.getPaymentId = functions.https.onRequest((req, res) => {
+
+    if(req.method === 'GET') {
+
+        var token = req.query.token
+        var key = req.query.key;
+
+        if(key && token) {
+
+            return admin.database().ref('users').orderByChild('token').equalTo(token).once('value', function(snapshot) {
+                if (snapshot.val()) {
+
+                    return database.child(key).on('value', (snapshot) => {
+
+                        if(snapshot.val()) {
+                            var snapshotBody = snapshot.val();
+                            snapshotBody["id"] = key;
+
+                            res.status(200).send(
+                                snapshotBody
+                            );
+                        }
+                        else {
+                            res.status(404).send();
+                        }
+                    })
+                }
+            })
+        }
+        else {
+            res.status(400).send('No matches for id');
         }
     }
     else {

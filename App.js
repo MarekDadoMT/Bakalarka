@@ -4,18 +4,21 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 import firebase from 'firebase';
 import 'firebase/functions';
 
+
+
 import Home from './screens/Home';
 import Login from './screens/Login';
-import Payments from './screens/Payments';
+import List from './screens/List';
 import NewPayment from './screens/NewPayment';
-
+import Payment from './screens/Payment';
 
 const AppNavigator = createStackNavigator(
     {
         Home,
         Login,
-        Payments,
-        NewPayment
+        List,
+        NewPayment,
+        Payment
     },
 
     {

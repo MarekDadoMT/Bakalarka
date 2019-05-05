@@ -45,7 +45,7 @@ class fb {
     async addToDatabase(state, token, author) {
 
 
-        var obj = { author: author, size: state.size};
+        var obj = { author: author, sourceAddress: state.sourceAddress, destinationAddress: state.destinationAddress, amount: state.amount};
         var myJSON = JSON.stringify(obj);
 
         console.log(myJSON);
@@ -66,6 +66,20 @@ class fb {
                 Alert.alert("Success", "Payment was added")
             }
         });
+    }
+
+    async showPayment(id, token) {
+
+        return fetch(`https://us-central1-bpdatabase-58f91.cloudfunctions.net/getPaymentId?key=${id}&token=${token}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+        }).then((response) => {
+            var payment = JSON.parse(response['_bodyText']);
+            return payment;
+        })
     }
 }
 

@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { Button, View, Text , FlatList, Image, StyleSheet, TouchableOpacity, Picker, ScrollView, RefreshControl} from 'react-native';
 import fb from '../firebase';
 import IOSPicker from 'react-native-ios-picker';
+import im from '../images/transaction.png'
 
-//const data = [{category: 'No filter', code: '1'},{category: 'Football', code: '2'},{category: 'Hockey', code: '3'}];
+const data = [{category: 'No filter', code: '1'},{category: 'Football', code: '2'},{category: 'Hockey', code: '3'}];
 
-export default class List extends Component {
+export default class Payments extends Component {
 
 
     constructor(props) {
@@ -29,22 +30,22 @@ export default class List extends Component {
         this.setState({data: pole})
     }
 
-    // fetchDataCategory = async (itemValue) => {
-    //
-    //     if(this.state.selectedValue === "No filter") {
-    //         const pole =  await fb.instance.showData(fb.instance.token).catch((error) => {
-    //             alert(error.message);
-    //         });
-    //         this.setState({data: pole});
-    //     }
-    //
-    //     else {
-    //         const pole =  await fb.instance.showArticleCategory(this.state.selectedValue, fb.instance.token).catch((error) => {
-    //             alert(error.message);
-    //         });
-    //         this.setState({data: pole});
-    //     }
-    // };
+    /*fetchDataCategory = async (itemValue) => {
+
+        if(this.state.selectedValue === "No filter") {
+            const pole =  await fb.instance.showData(fb.instance.token).catch((error) => {
+                alert(error.message);
+            });
+            this.setState({data: pole});
+        }
+
+        else {
+            const pole =  await fb.instance.showArticleCategory(this.state.selectedValue, fb.instance.token).catch((error) => {
+                alert(error.message);
+            });
+            this.setState({data: pole});
+        }
+    };*/
 
     _onRefresh = () => {
         this.setState({refreshing: true});
@@ -53,10 +54,10 @@ export default class List extends Component {
         });
     };
 
-    // _change = async (d, i) => {
-    //     await this.setState({selectedValue: data[i].category});
-    //     this.fetchDataCategory();
-    // }
+    /*_change = async (d, i) => {
+        await this.setState({selectedValue: data[i].category});
+        this.fetchDataCategory();
+    }*/
 
 
     _keyExtractor = (item, index) => item.id;
@@ -64,13 +65,14 @@ export default class List extends Component {
 
     _renderItem = ({ item }) => {
         return(
-            <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => console.log("Stlacil si packet")}
+            <TouchableOpacity style={{flexDirection: 'row'}}
+                              onPress={() => this.props.navigation.navigate('Payment', {id: item.id})}
             >
-                {/*<Image*/}
-                {/*    source={{ uri: item.image }}*/}
-                {/*    style={{ width: 60, height: 60, marginLeft: 30, marginTop: 30, marginBottom: 30 }}*/}
-                {/*/>*/}
-                <Text style={styles.heading}>{item.size}</Text>
+                <Image
+                    source={require('../images/transaction.png')}
+                    style={{ width: 60, height: 60, marginLeft: 30, marginTop: 30, marginBottom: 30 }}
+                />
+                <Text style={styles.heading}>{item.id}</Text>
             </TouchableOpacity>
         )
     };
@@ -85,29 +87,7 @@ export default class List extends Component {
                     />
                 }>
 
-                <TouchableOpacity style={styles.buttonContainerAdd}
-                                  onPress={() => this.props.navigation.navigate('NewPayment')}
-                >
-                    <Text style={styles.buttonText}>Nová platba</Text>
-                </TouchableOpacity>
-
-                <Text style={styles.heading}>Filter by category:</Text>
-
-                {/*<View style={styles.combobox}>*/}
-                {/*    <IOSPicker*/}
-                {/*        selectedValue={this.state.selectedValue}*/}
-                {/*        onValueChange={(d, i)=> this._change(d, i)}*/}
-                {/*        mode='modal'*/}
-                {/*        textStyle={{color: 'grey'}}*/}
-                {/*    >*/}
-                {/*        {*/}
-                {/*            data.map((item, index)=>*/}
-                {/*                <Picker.Item key={index} label={item.category} value={item.code} />*/}
-                {/*            )*/}
-                {/*        }*/}
-                {/*    </IOSPicker>*/}
-                {/*</View>*/}
-
+                <Text style={styles.title}>User logged in: {fb.instance.author}</Text>
 
 
                 <View>
@@ -118,6 +98,12 @@ export default class List extends Component {
                         keyExtractor={this._keyExtractor}
                     />
                 </View>
+
+                <TouchableOpacity style={styles.buttonContainerAdd}
+                                  onPress={() => this.props.navigation.navigate('NewPayment')}
+                >
+                    <Text style={styles.buttonText}>Add new transaction</Text>
+                </TouchableOpacity>
 
             </ScrollView>
 
@@ -132,9 +118,11 @@ const styles = StyleSheet.create({
         marginLeft: 30,
         marginRight: 30,
         backgroundColor: 'grey',
-        borderColor: '#313335',
+        borderColor: '#d6d7da',
+        //borderRadius: 20,
         borderWidth: 0.5,
-
+        //overflow: 'hidden'
+        //color: 'grey'
     },
     heading: {
         color: 'black',

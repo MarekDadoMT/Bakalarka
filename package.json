@@ -7,12 +7,17 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "expo": "^32.0.0",
-    "firebase": "^5.10.1",
+    "firebase": "^5.9.3",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
+    "react-native-image-picker": "^0.28.0",
     "react-native-ios-picker": "^1.0.0",
-    "react-navigation": "^3.9.1"
+    "react-native-modal-picker": "0.0.16",
+    "react-native-select-input-ios": "^2.0.1",
+    "react-native-sha256": "^1.3.6",
+    "react-navigation": "^3.3.2"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0"
