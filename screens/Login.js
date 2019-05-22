@@ -18,7 +18,7 @@ export default class Login extends Component {
             if(tok != null) {
                 fb.instance.token = tok;
                 fb.instance.author = this.state.username;
-                console.log("Token: " + fb.instance.token);  //testovanie
+                //console.log("Token: " + fb.instance.token);  //testovanie
                 this.props.navigation.navigate('List')
             }
         })

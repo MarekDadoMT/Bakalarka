@@ -14,13 +14,9 @@ import {
 import fb from '../firebase';
 import IOSPicker from 'react-native-ios-picker';
 
-const sourceData = [{address: 'mpRgtZCtmJepJwMVoSonUbQoQPqHDWwqtr', code: '1'},{address: 'aGamdIhRhdjTopmFFndoLqItgmjyGnDddt', code: '2'}];
-const destinationData = [{address: 'mpJUB1MZjio8BuxSxsKkWtje8kqxKmvSF7', code: '1'},{address: 'aRBIhjTOlkjtAmKLsojfbnMMsbcgtRLAma', code: '2'}];
 
-
-//const privateKeyWIF = 'cW95fJ3yU9Y9frcYuhvxxtDY5mnNkqfT9GAAqogTRNJdmMH4JDFw';
-//console.log('address: ' + address);  //malo by vratit mpRgtZCtmJepJwMVoSonUbQoQPqHDWwqtr
-//console.log('Address 2: ' + address2);  //mpJUB1MZjio8BuxSxsKkWtje8kqxKmvSF7
+const sourceData = [{address: 'rLPnpNBXiPexAxtxFnhmnp9Wa8m8DS1TG', code: '1'}];
+const destinationData = [{address: 'rUCzEr6jrEyMpjhs4wSdQdz4g8Y382NxfM', code: '1'}];
 
 
 export default class NewPayment extends Component {

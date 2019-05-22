@@ -4,10 +4,11 @@ import fb from '../firebase';
 import IOSPicker from 'react-native-ios-picker';
 import im from '../images/transaction.png'
 
+
+
 const data = [{category: 'No filter', code: '1'},{category: 'Football', code: '2'},{category: 'Hockey', code: '3'}];
 
 export default class Payments extends Component {
-
 
     constructor(props) {
         super(props);
@@ -27,25 +28,10 @@ export default class Payments extends Component {
         const pole = await fb.instance.showData(fb.instance.token).catch((error) => {
             alert(error.message);
         });
-        this.setState({data: pole})
+        this.setState({data: pole});
+
+
     }
-
-    /*fetchDataCategory = async (itemValue) => {
-
-        if(this.state.selectedValue === "No filter") {
-            const pole =  await fb.instance.showData(fb.instance.token).catch((error) => {
-                alert(error.message);
-            });
-            this.setState({data: pole});
-        }
-
-        else {
-            const pole =  await fb.instance.showArticleCategory(this.state.selectedValue, fb.instance.token).catch((error) => {
-                alert(error.message);
-            });
-            this.setState({data: pole});
-        }
-    };*/
 
     _onRefresh = () => {
         this.setState({refreshing: true});

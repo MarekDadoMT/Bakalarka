@@ -23,6 +23,15 @@ export default class Payment extends Component {
         });
     };
 
+    _onPress = async () => {
+
+        try {
+            await fb.instance.sendPayment(this.state);
+        } catch (error) {
+            console.log('Something is wrong');
+        }
+    };
+
     async componentDidMount() {
         const id = this.props.navigation.state.params.id;
         const payment = await fb.instance.showPayment(id, fb.instance.token);
@@ -58,6 +67,12 @@ export default class Payment extends Component {
                     <Text style={styles.heading}>Amount: </Text>
                     <Text style={{color: '#585858'}}>{this.state.amount}</Text>
                 </View>
+
+                <TouchableOpacity style={styles.buttonContainerAdd}
+                                  onPress={this._onPress}
+                >
+                    <Text style={styles.buttonText}>EXECUTE</Text>
+                </TouchableOpacity>
 
             </ScrollView>
         );

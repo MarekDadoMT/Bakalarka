@@ -37,7 +37,7 @@ class fb {
             },
         }).then((response) => {
             var packets = JSON.parse(response['_bodyText']);
-            console.log(packets);
+            //console.log(packets);
             return packets;
         })
     }
@@ -59,12 +59,12 @@ class fb {
                 },
                 body: myJSON
             }).then((response) => {
-            if(response.status !== 200) {
+                if(response.status !== 200) {
                 Alert.alert("Payment was not added to the database", "Missing parameters");
-            }
-            else {
+                }
+                else {
                 Alert.alert("Success", "Payment was added")
-            }
+                }
         });
     }
 
@@ -80,6 +80,25 @@ class fb {
             var payment = JSON.parse(response['_bodyText']);
             return payment;
         })
+    }
+
+    async sendPayment(state) {
+
+        const sourceAddress = state.sourceAddress;
+        const destinationAddress = state.destinationAddress;
+        const amount = state.amount;
+
+        //console.log("SA: " + sourceAddress + ", DA: " + destinationAddress + ", Amount: " + amount)
+
+        return fetch(`https://us-central1-bpdatabase-58f91.cloudfunctions.net/sendPayment?sourceAddress=${sourceAddress}&destinationAddress=${destinationAddress}&amount=${amount}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+        }).then(Alert.alert("Transaction COMPLETED", "haha"))
+
+
     }
 }
 

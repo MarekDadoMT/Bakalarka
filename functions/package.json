@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "firebase-admin": "~7.0.0",
-    "firebase-functions": "^2.2.0"
+    "firebase-functions": "^2.2.0",
+    "ripple-lib": "^1.2.3"
   },
   "private": true
 }

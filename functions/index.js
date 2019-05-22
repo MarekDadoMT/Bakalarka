@@ -1,6 +1,9 @@
 const functions = require("firebase-functions");
 //const cors = require('cors')({ origin: true });
 const admin = require('firebase-admin');
+const RippleAPI = require('ripple-lib').RippleAPI
+
+
 
 admin.initializeApp();
 
@@ -197,6 +200,58 @@ exports.getPaymentId = functions.https.onRequest((req, res) => {
     else {
         res.status(400).send();
     }
+});
+
+exports.sendPayment = functions.https.onRequest((req, res) => {
+
+    if(req.method === 'GET') {
+        var sourceAddress = req.query.sourceAddress;
+        var destinationAddress = req.query.destinationAddress;
+        var amountQ = req.query.amount;
+
+
+        // TESTNET ADDRESS 1
+        const ADDRESS_1 = sourceAddress;
+        const SECRET_1 = "ssK5R24G1oC8uvNV7bNkjsh5kQjnw";
+        // TESTNET ADDRESS 2
+        const ADDRESS_2 = destinationAddress;
+        const instructions = {maxLedgerVersionOffset: 5};
+        const currency = 'XRP';
+        const amount = amountQ;
+
+        console.log("SA: " + sourceAddress + ", DA: " + destinationAddress + ", Amount: " + amount);
+        const payment = {
+            source: {
+                address: ADDRESS_1,
+                maxAmount: {
+                    value: amount,
+                    currency: currency
+                }
+            },
+            destination: {
+                address: ADDRESS_2,
+                amount: {
+                    value: amount,
+                    currency: currency
+                }
+            }
+        }
+        const api = new RippleAPI({
+            server: 'wss://s.altnet.rippletest.net:51233'   // TESTNET
+        });
+        api.connect().then(() => {
+            console.log('Connected...');
+            api.preparePayment(ADDRESS_1, payment, instructions).then(prepared => {
+                const {signedTransaction, id} = api.sign(prepared.txJSON, SECRET_1);
+                console.log(id)
+                api.submit(signedTransaction).then(result => {
+                    console.log(JSON.stringify(result, null, 2));
+                    api.disconnect()
+                })
+            })
+        }).catch(console.error);
+    }
+
 });
 
 
